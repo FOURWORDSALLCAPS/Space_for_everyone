@@ -22,3 +22,5 @@ rad.json
 TestResults.xml
 #env files
 *.env
+#Python folder
+__pycache__
