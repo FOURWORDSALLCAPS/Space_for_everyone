@@ -1,19 +1,12 @@
 import requests
-from pathlib import Path
-from os.path import splitext, splitdrive
-from urllib.parse import urlparse
 from environs import Env
 from get_extension import get_extension
 from get_picture import get_picture
-
-env = Env()
-env.read_env()
-
-
-api_key = env('API_KEY')
+import argparse
+import datetime
 
 
-def fetch_earth_polychromatic_imaging():
+def fetch_earth_polychromatic_imaging(api_key, user_date):
     link_response = requests.get(f"https://api.nasa.gov/EPIC/api/natural/images?api_key={api_key}")
 
     links = []
@@ -21,8 +14,7 @@ def fetch_earth_polychromatic_imaging():
         data = link_response.json()
         for item in data:
             image_id = item["identifier"]
-            date = item["date"].split()[0].replace("-", "/")
-            url = f"https://api.nasa.gov/EPIC/archive/natural/{date}/png/epic_1b_{image_id}.png?api_key={api_key}"
+            url = f"https://api.nasa.gov/EPIC/archive/natural/{user_date.d}/png/epic_1b_{image_id}.png?api_key={api_key}"
             links.append(url)
     else:
         print("Error:", link_response.status_code)
@@ -30,3 +22,22 @@ def fetch_earth_polychromatic_imaging():
     for link_number, link in enumerate(links):
         if not get_extension(link) == '':
             get_picture(link, f"images/nasa_epic_{link_number}{get_extension(link)}")
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description='Скрипт скачивает астрономическую картину дня'
+    )
+    parser.add_argument(
+        '-d',
+        default=(datetime.date.today() - datetime.timedelta(days=1)).strftime('%Y/%m/%d'),
+        help='Введите дату формата YYYY/MM/DD')
+    user_date = parser.parse_args()
+    api_key = env('API_KEY')
+    fetch_earth_polychromatic_imaging(api_key, user_date)
+
+
+if __name__ == '__main__':
+    env = Env()
+    env.read_env()
+    main()
