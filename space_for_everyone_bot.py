@@ -12,14 +12,20 @@ def main():
                         help='Каталог с фотографиями для публикации')
     parser.add_argument('--interval', type=int, default=3600,
                         help='Интервал в секундах для публикации фотографий')
+    parser.add_argument('--photo', type=str, default=None,
+                        help='Путь к фото для публикации')
     args = parser.parse_args()
+
     bot_token = env('BOT_TOKEN')
     chat_id = env('CHAT_ID')
     bot = telegram.Bot(token=bot_token)
-    filenames = os.listdir(args.dir)
+    if args.photo:
+        photo_path = args.photo
+    else:
+        filenames = os.listdir(args.dir)
+        photo_path = os.path.join(args.dir, random.choice(filenames))
 
     while True:
-        photo_path = os.path.join(args.dir, random.choice(filenames))
         bot.send_photo(chat_id=chat_id, photo=open(photo_path, 'rb'))
         time.sleep(args.interval)
 
