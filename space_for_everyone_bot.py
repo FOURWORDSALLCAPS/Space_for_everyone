@@ -18,8 +18,8 @@ def main():
                         help='Путь к фото для публикации')
     args = parser.parse_args()
 
-    bot_token = env('BOT_TOKEN')
-    chat_id = env('CHAT_ID')
+    bot_token = env('TELEGRAM_TOKEN')
+    chat_id = env('TG_CHAT_ID')
     bot = telegram.Bot(token=bot_token)
     if args.photo:
         photo_path = args.photo

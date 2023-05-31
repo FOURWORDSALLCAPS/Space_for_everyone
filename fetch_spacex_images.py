@@ -3,14 +3,14 @@ import argparse
 from get_picture import get_picture
 
 
-def fetch_spacex_last_launch(user_id):
-    link_response = requests.get(f"https://api.spacexdata.com/v5/launches/{user_id.i}")
+def fetch_spacex_last_launch(args):
+    link_response = requests.get(f"https://api.spacexdata.com/v5/launches/{args.i}")
 
-    json_data = link_response.json()
+    data_list_spacex = link_response.json()
 
     links = []
-    if link_response.status_code == 200:
-        for item in json_data["links"]["flickr"]["original"]:
+    if link_response.ok:
+        for item in data_list_spacex["links"]["flickr"]["original"]:
             links.append(item)
     else:
         print("Error:", link_response.status_code)
@@ -24,8 +24,8 @@ def main():
         description='Скрипт скачивает фотографии запуска SapceX'
     )
     parser.add_argument('-i', default='5eb87d47ffd86e000604b38a', help='Введите id запуска')
-    user_id = parser.parse_args()
-    fetch_spacex_last_launch(user_id)
+    args = parser.parse_args()
+    fetch_spacex_last_launch(args)
 
 
 if __name__ == '__main__':

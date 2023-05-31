@@ -1,16 +1,16 @@
 import requests
+import argparse
 from environs import Env
 from get_extension import get_extension
 from get_picture import get_picture
-import argparse
 
 
-def fetch_astronomy_picture_day(api_key, user_count):
-    link_response = requests.get(f"https://api.nasa.gov/planetary/apod?api_key={api_key}&count={user_count.c}")
+def fetch_astronomy_picture_day(api_key, args):
+    link_response = requests.get(f"https://api.nasa.gov/planetary/apod?api_key={api_key}&count={args.c}")
     links = []
-    if link_response.status_code == 200:
-        json_data = link_response.json()
-        for item in json_data:
+    if link_response.ok:
+        data_list_nasa = link_response.json()
+        for item in data_list_nasa:
             links.append(item["url"])
     else:
         print("Error:", link_response.status_code)
@@ -26,10 +26,10 @@ def main():
     parser = argparse.ArgumentParser(
         description='Скрипт скачивает астрономическую картину дня'
     )
-    parser.add_argument('-c', default='2', help='Введите число')
-    user_count = parser.parse_args()
-    api_key = env('API_KEY')
-    fetch_astronomy_picture_day(api_key, user_count)
+    parser.add_argument('-c', default='2', help='Введите количество картинок')
+    args = parser.parse_args()
+    api_key = env('NASA_TOKEN')
+    fetch_astronomy_picture_day(api_key, args)
 
 
 if __name__ == '__main__':

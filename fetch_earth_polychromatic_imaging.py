@@ -1,19 +1,19 @@
 import requests
+import argparse
 from environs import Env
 from get_extension import get_extension
 from get_picture import get_picture
-import argparse
 
 
-def fetch_earth_polychromatic_imaging(api_key, user_date):
+def fetch_earth_polychromatic_imaging(api_key, args):
     link_response = requests.get(f"https://api.nasa.gov/EPIC/api/natural/images?api_key={api_key}")
 
     links = []
-    if link_response.status_code == 200:
-        data = link_response.json()
-        for item in data:
+    if link_response.ok:
+        data_list_nasa = link_response.json()
+        for item in data_list_nasa:
             image_id = item["identifier"]
-            url = f"https://api.nasa.gov/EPIC/archive/natural/{user_date.d}/png/epic_1b_{image_id}.png?api_key={api_key}"
+            url = f"https://api.nasa.gov/EPIC/archive/natural/{args.d}/png/epic_1b_{image_id}.png?api_key={api_key}"
             links.append(url)
     else:
         print("Error:", link_response.status_code)
@@ -33,9 +33,9 @@ def main():
         '-d',
         default='2023/05/29',
         help='Введите дату формата YYYY/MM/DD')
-    user_date = parser.parse_args()
-    api_key = env('API_KEY')
-    fetch_earth_polychromatic_imaging(api_key, user_date)
+    args = parser.parse_args()
+    api_key = env('NASA_TOKEN')
+    fetch_earth_polychromatic_imaging(api_key, args)
 
 
 if __name__ == '__main__':
