@@ -10,8 +10,9 @@ def fetch_astronomy_picture_day(api_key, args):
     links = [item["url"] for item in link_response.json()] if link_response.ok else []
 
     for link_number, link in enumerate(links):
-        if not get_extension(link) == '':
-            get_picture(link, f"images/nasa_apod_{link_number}{get_extension(link)}")
+        extension = get_extension(link)
+        if extension:
+            get_picture(link, f"images/nasa_apod_{link_number}{extension}")
 
 
 def main():

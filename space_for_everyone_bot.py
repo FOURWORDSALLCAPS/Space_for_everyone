@@ -12,7 +12,7 @@ def main():
     parser = argparse.ArgumentParser(description='Telegram-бот для публикации фотографий')
     parser.add_argument('--dir', type=str, required=True,
                         help='Каталог с фотографиями для публикации')
-    parser.add_argument('--interval', type=int, default=3600,
+    parser.add_argument('--interval', type=int, default=14400,
                         help='Интервал в секундах для публикации фотографий')
     parser.add_argument('--photo', type=str, default=None,
                         help='Путь к фото для публикации')
@@ -28,7 +28,8 @@ def main():
         photo_path = os.path.join(args.dir, random.choice(filenames))
 
     while True:
-        bot.send_photo(chat_id=chat_id, photo=open(photo_path, 'rb'))
+        with open(photo_path, 'rb') as photo:
+            bot.send_photo(chat_id=chat_id, photo=photo)
         time.sleep(args.interval)
 
 
