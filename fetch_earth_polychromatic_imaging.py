@@ -3,7 +3,6 @@ from environs import Env
 from get_extension import get_extension
 from get_picture import get_picture
 import argparse
-import datetime
 
 
 def fetch_earth_polychromatic_imaging(api_key, user_date):
@@ -30,7 +29,7 @@ def main():
     )
     parser.add_argument(
         '-d',
-        default=(datetime.date.today() - datetime.timedelta(days=1)).strftime('%Y/%m/%d'),
+        default='2023/05/29',
         help='Введите дату формата YYYY/MM/DD')
     user_date = parser.parse_args()
     api_key = env('API_KEY')
