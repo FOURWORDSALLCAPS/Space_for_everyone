@@ -24,6 +24,8 @@ def fetch_earth_polychromatic_imaging(api_key, user_date):
 
 
 def main():
+    env = Env()
+    env.read_env()
     parser = argparse.ArgumentParser(
         description='Скрипт скачивает полихроматическое изображение Земли'
     )
@@ -37,6 +39,4 @@ def main():
 
 
 if __name__ == '__main__':
-    env = Env()
-    env.read_env()
     main()

@@ -21,6 +21,8 @@ def fetch_astronomy_picture_day(api_key, user_count):
 
 
 def main():
+    env = Env()
+    env.read_env()
     parser = argparse.ArgumentParser(
         description='Скрипт скачивает астрономическую картину дня'
     )
@@ -31,6 +33,4 @@ def main():
 
 
 if __name__ == '__main__':
-    env = Env()
-    env.read_env()
     main()

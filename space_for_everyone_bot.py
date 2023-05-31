@@ -7,6 +7,8 @@ from environs import Env
 
 
 def main():
+    env = Env()
+    env.read_env()
     parser = argparse.ArgumentParser(description='Telegram-бот для публикации фотографий')
     parser.add_argument('--dir', type=str, required=True,
                         help='Каталог с фотографиями для публикации')
@@ -31,6 +33,4 @@ def main():
 
 
 if __name__ == '__main__':
-    env = Env()
-    env.read_env()
     main()
