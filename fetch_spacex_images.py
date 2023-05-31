@@ -5,15 +5,9 @@ from get_picture import get_picture
 
 def fetch_spacex_last_launch(args):
     link_response = requests.get(f"https://api.spacexdata.com/v5/launches/{args.i}")
-
     data_list_spacex = link_response.json()
 
-    links = []
-    if link_response.ok:
-        for item in data_list_spacex["links"]["flickr"]["original"]:
-            links.append(item)
-    else:
-        print("Error:", link_response.status_code)
+    links = [item for item in data_list_spacex["links"]["flickr"]["original"]] if link_response.ok else []
 
     for link_number, link in enumerate(links):
         get_picture(link, f"images/spacex_{link_number}.jpg")
