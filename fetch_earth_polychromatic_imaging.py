@@ -25,7 +25,7 @@ def fetch_earth_polychromatic_imaging(api_key, user_date):
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Скрипт скачивает астрономическую картину дня'
+        description='Скрипт скачивает полихроматическое изображение Земли'
     )
     parser.add_argument(
         '-d',

@@ -21,7 +21,7 @@ def fetch_spacex_last_launch(user_id):
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Скрипт скачивает астрономическую картину дня'
+        description='Скрипт скачивает фотографии запуска SapceX'
     )
     parser.add_argument('-i', default='5eb87d47ffd86e000604b38a', help='Введите id запуска')
     user_id = parser.parse_args()
