@@ -7,7 +7,7 @@ def fetch_spacex_last_launch(identifier):
     link_response = requests.get(f"https://api.spacexdata.com/v5/launches/{identifier}")
     data_spacex = link_response.json()
 
-    links = [item for item in data_list_spacex["links"]["flickr"]["original"]] if link_response.ok else []
+    links = [image_data for image_data in data_spacex["links"]["flickr"]["original"]] if link_response.ok else []
 
     for link_number, link in enumerate(links):
         get_picture(link, f"images/spacex_{link_number}.jpg")

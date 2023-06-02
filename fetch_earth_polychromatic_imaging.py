@@ -13,13 +13,11 @@ def fetch_earth_polychromatic_imaging(api_key, date):
     }
     url = 'https://api.nasa.gov/EPIC/api/natural/images'
     response = requests.get(url, params=params)
-    links = []
-    if response.ok:
-        data_list_nasa = response.json()
-        for item in data_list_nasa:
-            image_id = item["identifier"]
-            url = f"https://api.nasa.gov/EPIC/archive/natural/{args.d}/png/epic_1b_{image_id}.png?{urlencode(params)}"
-            links.append(url)
+
+    data_nasa = response.json() if response.ok else []
+    links = [
+        f"https://api.nasa.gov/EPIC/archive/natural/{date}/png/epic_1b_{image_data['identifier']}.png?{urlencode(params)}"
+        for image_data in data_nasa]
 
     for link_number, link in enumerate(links):
         extension = get_extension(link)
