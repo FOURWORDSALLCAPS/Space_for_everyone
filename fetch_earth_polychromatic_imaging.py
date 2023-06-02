@@ -7,7 +7,7 @@ from get_picture import get_picture
 from urllib.parse import urlencode
 
 
-def fetch_earth_polychromatic_imaging(api_key, args):
+def fetch_earth_polychromatic_imaging(api_key, date):
     params = {
         'api_key': api_key,
     }
@@ -39,7 +39,7 @@ def main():
         help='Введите дату формата YYYY/MM/DD')
     args = parser.parse_args()
     api_key = env('NASA_TOKEN')
-    fetch_earth_polychromatic_imaging(api_key, args)
+    fetch_earth_polychromatic_imaging(api_key, args.d)
 
 
 if __name__ == '__main__':

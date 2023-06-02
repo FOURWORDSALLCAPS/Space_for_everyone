@@ -5,10 +5,10 @@ from get_extension import get_extension
 from get_picture import get_picture
 
 
-def fetch_astronomy_picture_day(api_key, args):
+def fetch_astronomy_picture_day(api_key, count):
     params = {
         'api_key': api_key,
-        'count': args.c
+        'count': count
     }
     url = 'https://api.nasa.gov/planetary/apod'
     link_response = requests.get(url, params=params)
@@ -29,7 +29,7 @@ def main():
     parser.add_argument('-c', default='2', help='Введите количество картинок')
     args = parser.parse_args()
     api_key = env('NASA_TOKEN')
-    fetch_astronomy_picture_day(api_key, args)
+    fetch_astronomy_picture_day(api_key, args.c)
 
 
 if __name__ == '__main__':
