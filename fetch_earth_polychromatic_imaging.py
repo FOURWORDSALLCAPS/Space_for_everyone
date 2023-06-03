@@ -4,7 +4,6 @@ import datetime
 from environs import Env
 from get_extension import get_extension
 from get_picture import get_picture
-from urllib.parse import urlencode
 
 
 def fetch_earth_polychromatic_imaging(api_key, date):
@@ -16,8 +15,8 @@ def fetch_earth_polychromatic_imaging(api_key, date):
 
     data_nasa = response.json() if response.ok else []
     links = [
-        f"https://api.nasa.gov/EPIC/archive/natural/{date}/png/epic_1b_{image_data['identifier']}.png?{urlencode(params)}"
-        for image_data in data_nasa]
+        requests.get(f"https://api.nasa.gov/EPIC/archive/natural/{date}/png/epic_1b_{image_data['identifier']}.png",
+                     params=params).url for image_data in data_nasa]
 
     for link_number, link in enumerate(links):
         extension = get_extension(link)
