@@ -10,27 +10,29 @@ def main():
     env = Env()
     env.read_env()
     parser = argparse.ArgumentParser(description='Telegram-бот для публикации фотографий')
-    parser.add_argument('--dir', type=str, required=True,
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument('--dir', type=str,
                         help='Каталог с фотографиями для публикации')
+    group.add_argument('--photo', type=str,
+                        help='Путь к фото для публикации')
     parser.add_argument('--interval', type=int, default=14400,
                         help='Интервал в секундах для публикации фотографий')
-    parser.add_argument('--photo', type=str, default=None,
-                        help='Путь к фото для публикации')
     args = parser.parse_args()
 
     bot_token = env('TELEGRAM_TOKEN')
     chat_id = env('TG_CHAT_ID')
     bot = telegram.Bot(token=bot_token)
-    if args.photo:
-        photo_path = args.photo
-    else:
-        filenames = os.listdir(args.dir)
-        photo_path = os.path.join(args.dir, random.choice(filenames))
 
-    while True:
-        with open(photo_path, 'rb') as photo:
+    if args.photo:
+        with open(args.photo, 'rb') as photo:
             bot.send_photo(chat_id=chat_id, photo=photo)
-        time.sleep(args.interval)
+    else:
+        while True:
+            filenames = os.listdir(args.dir)
+            photo_path = os.path.join(args.dir, random.choice(filenames))
+            with open(photo_path, 'rb') as photo:
+                bot.send_photo(chat_id=chat_id, photo=photo)
+            time.sleep(args.interval)
 
 
 if __name__ == '__main__':
